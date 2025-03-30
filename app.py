@@ -5,7 +5,7 @@ import numpy as np
 
 # Load the model
 #model = pickle.load(open("Logistic_Regression.pkl", 'rb'))
-with open('Regression_models.pkl', 'rb') as f:
+with open('./Regression_models.pkl', 'rb') as f:
     models = pickle.load(f)
 
 #streamlit title and description
