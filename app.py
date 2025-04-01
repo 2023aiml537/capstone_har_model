@@ -31,20 +31,23 @@ if uploaded_file is not None:
 
         st.dataframe(data)
 
+        scale = StandardScaler()
+        scaled_data = scale.fit_transform(data)
+
         # Predictions
-        lr_predictions = models['LogisticRegression'].predict(data)
+        lr_predictions = models['LogisticRegression'].predict(scaled_data)
 
        # ff_pred_probs = models['FeedForward'].predict(data)
        # feedforward_predictions = np.array([np.argmax(probs) for probs in ff_pred_probs])
         # Resolve activity labels
        # ff_activity_predictions = [activity_map[pred] for pred in feedforward_predictions]
 
-        ls_pred_probs = models['LSTM'].predict(data)
+        ls_pred_probs = models['LSTM'].predict(scaled_data)
         lstm_predictions = np.array([np.argmax(probs) for probs in ls_pred_probs])
         # Resolve activity labels
         lstm_activity_predictions = [activity_map[pred] for pred in lstm_predictions]
 
-        cnn_pred_probs = models['CNN'].predict(data)
+        cnn_pred_probs = models['CNN'].predict(scaled_data)
         cnn_predictions = np.array([np.argmax(probs) for probs in cnn_pred_probs])
         # Resolve activity labels
         cnn_activity_predictions = [activity_map[pred] for pred in cnn_predictions]
