@@ -2,6 +2,7 @@ import streamlit as st
 import pickle
 import pandas as pd
 import numpy as np
+from sklearn.preprocessing import StandardScaler
 
 # Load the model
 #model = pickle.load(open("Logistic_Regression.pkl", 'rb'))
