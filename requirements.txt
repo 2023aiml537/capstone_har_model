@@ -3,4 +3,4 @@ pandas
 scikit-learn
 keras
 tensorflow
-StandardScaler
+sklearn.preprocessing
