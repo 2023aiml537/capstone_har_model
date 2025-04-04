@@ -4,6 +4,9 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
+# Increase Pandas Styler render limit
+pd.set_option("styler.render.max_elements", 500000)  # Adjust based on your dataset size
+
 # Function to color mismatched predictions
 def highlight_mismatch(pred_col, actual_col):
     def highlight(row):
