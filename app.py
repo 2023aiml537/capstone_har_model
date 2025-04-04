@@ -19,6 +19,9 @@ st.write("This app predicts human activities based on sensor data.")
 st.sidebar.header("Input Data")
 uploaded_file = st.sidebar.file_uploader("Upload CSV file", type=["csv"])
 
+model_options = ["Logistic Regression", "LSTM", "CNN", "All"]
+selected_model = st.sidebar.selectbox("Choose Model(s) to Run", model_options)
+
 if uploaded_file is not None:
     try:
         data = pd.read_csv(uploaded_file)
@@ -56,20 +59,9 @@ if uploaded_file is not None:
         data['LSTM_Prediction'] = lstm_activity_predictions
         data['CNN_Prediction'] = cnn_activity_predictions
 
-        # Function to highlight mismatches
-        def highlight_mismatch(val, actual):
-            """Return color if mismatch, else no style."""
-            return 'background-color: lightcoral' if val != actual else ''
-
-        # Apply styling to mismatched predictions
-        styled_df = data.style.applymap(lambda val: highlight_mismatch(val, data[actual_activity_col]),
-                                        subset=['LogisticRegression_Prediction', 'LSTM_Prediction', 'CNN_Prediction'])
-
         # Display predictions
         st.write("🔍 **Predictions:**")
-        #st.dataframe(data)
-        st.dataframe(styled_df, use_container_width=True)
-
+        st.dataframe(data)
 
     except Exception as e:
         st.error(f"Error processing data: {e}")
