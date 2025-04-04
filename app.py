@@ -16,7 +16,7 @@ st.title("Human Activity Recognition")
 st.write("This app predicts human activities based on sensor data.")
 
 # Input widgets
-st.sidebar.header("Input Data")
+st.sidebar.header("Upload & Configuration")
 uploaded_file = st.sidebar.file_uploader("Upload CSV file", type=["csv"])
 
 model_options = ["Logistic Regression", "LSTM", "CNN", "All"]
@@ -42,22 +42,23 @@ if uploaded_file is not None:
         scaled_data = scale.fit_transform(features)
 
         # Predictions
-        lr_predictions = models['LogisticRegression'].predict(scaled_data)
+        if selected_model in ["Logistic Regression", "All"]:
+            lr_predictions = models['LogisticRegression'].predict(scaled_data)
+            data['LogisticRegression_Prediction'] = lr_predictions
 
-        ls_pred_probs = models['LSTM'].predict(scaled_data)
-        lstm_predictions = np.array([np.argmax(probs) for probs in ls_pred_probs])
-        # Resolve activity labels
-        lstm_activity_predictions = [activity_map[pred] for pred in lstm_predictions]
+        if selected_model in ["LSTM", "All"]:
+            ls_pred_probs = models['LSTM'].predict(scaled_data)
+            lstm_predictions = np.array([np.argmax(probs) for probs in ls_pred_probs])
+            # Resolve activity labels
+            lstm_activity_predictions = [activity_map[pred] for pred in lstm_predictions]
+            data['LSTM_Prediction'] = lstm_activity_predictions
 
-        cnn_pred_probs = models['CNN'].predict(scaled_data)
-        cnn_predictions = np.array([np.argmax(probs) for probs in cnn_pred_probs])
-        # Resolve activity labels
-        cnn_activity_predictions = [activity_map[pred] for pred in cnn_predictions]
-        
-        # Add predictions to the DataFrame
-        data['LogisticRegression_Prediction'] = lr_predictions
-        data['LSTM_Prediction'] = lstm_activity_predictions
-        data['CNN_Prediction'] = cnn_activity_predictions
+        if selected_model in ["LSTM", "All"]:
+            cnn_pred_probs = models['CNN'].predict(scaled_data)
+            cnn_predictions = np.array([np.argmax(probs) for probs in cnn_pred_probs])
+            # Resolve activity labels
+            cnn_activity_predictions = [activity_map[pred] for pred in cnn_predictions]
+            data['CNN_Prediction'] = cnn_activity_predictions
 
         # Display predictions
         st.write("🔍 **Predictions:**")
