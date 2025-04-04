@@ -69,12 +69,13 @@ if uploaded_file is not None:
         data['LSTM_Prediction'] = lstm_activity_predictions
         data['CNN_Prediction'] = cnn_activity_predictions
 
+        st.write("📋 **Columns in Uploaded File:**", list(data.columns))
         # Apply highlight to each prediction column
         styled_df = data.style \
             .apply(highlight_mismatch('LogisticRegression_Prediction', actual_activity_col), axis=1, subset=['LogisticRegression_Prediction']) \
             .apply(highlight_mismatch('LSTM_Prediction', actual_activity_col), axis=1, subset=['LSTM_Prediction']) \
             .apply(highlight_mismatch('CNN_Prediction', actual_activity_col), axis=1, subset=['CNN_Prediction'])
-
+        st.write("📋 **Columns in Pred File:**", list(styled_df.columns))
         # Display predictions
         st.write("🔍 **Predictions:**")
         #st.dataframe(data)
