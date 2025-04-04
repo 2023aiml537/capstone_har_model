@@ -73,7 +73,7 @@ if uploaded_file is not None:
             return highlight
             
         # Apply highlight to each prediction column
-        styled_df = data.style.apply(highlight_mismatch('LogisticRegression_Prediction', 'Activity'), axis=1, subset=['LogisticRegression_Prediction']) \
+        styled_df = data.style.apply(highlight_mismatch('LogisticRegression_Prediction', 'Activity'), axis=1, subset=['LogisticRegression_Prediction', 'Activity']) \
           #  .apply(highlight_mismatch('LSTM_Prediction', 'Activity'), axis=1, subset=['LSTM_Prediction']) \
           #  .apply(highlight_mismatch('CNN_Prediction', 'Activity'), axis=1, subset=['CNN_Prediction'])
 
