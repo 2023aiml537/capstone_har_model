@@ -53,7 +53,7 @@ if uploaded_file is not None:
             lstm_activity_predictions = [activity_map[pred] for pred in lstm_predictions]
             data['LSTM_Prediction'] = lstm_activity_predictions
 
-        if selected_model in ["LSTM", "All"]:
+        if selected_model in ["CNN", "All"]:
             cnn_pred_probs = models['CNN'].predict(scaled_data)
             cnn_predictions = np.array([np.argmax(probs) for probs in cnn_pred_probs])
             # Resolve activity labels
