@@ -31,9 +31,10 @@ if uploaded_file is not None:
         }
 
         st.dataframe(data)
-
+        actual_activity_col = "Activity"  
+        features = data.drop(columns=[actual_activity_col])  # Drop actual activity for feature extraction
         scale = StandardScaler()
-        scaled_data = scale.fit_transform(data)
+        scaled_data = scale.fit_transform(features)
 
         # Predictions
         lr_predictions = models['LogisticRegression'].predict(scaled_data)
