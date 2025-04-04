@@ -7,11 +7,7 @@ from sklearn.preprocessing import StandardScaler
 # Increase Pandas Styler render limit
 pd.set_option("styler.render.max_elements", 500000)  # Adjust based on your dataset size
 
-# Function to color mismatched predictions
-def highlight_mismatch(pred_col, actual_col):
-    def highlight(row):
-        return ['background-color: lightcoral' if row[pred_col] != row[actual_col] else '' for _ in row]
-    return highlight
+
 
 # Load the model
 #model = pickle.load(open("Logistic_Regression.pkl", 'rb'))
@@ -69,6 +65,12 @@ if uploaded_file is not None:
         data['LSTM_Prediction'] = lstm_activity_predictions
         data['CNN_Prediction'] = cnn_activity_predictions
 
+        # Function to color mismatched predictions
+        def highlight_mismatch(pred_col, actual_col):
+            def highlight(row):
+                return ['background-color: lightcoral' if row[pred_col] != row[actual_col] else '' for _ in row]
+            return highlight
+            
         # Apply highlight to each prediction column
         styled_df = data.style.apply(highlight_mismatch('LogisticRegression_Prediction', 'Activity'), axis=1, subset=['LogisticRegression_Prediction']) \
           #  .apply(highlight_mismatch('LSTM_Prediction', 'Activity'), axis=1, subset=['LSTM_Prediction']) \
