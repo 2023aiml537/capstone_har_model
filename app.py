@@ -7,10 +7,7 @@ from sklearn.preprocessing import StandardScaler
 # Increase Pandas Styler render limit
 pd.set_option("styler.render.max_elements", 500000)  # Adjust based on your dataset size
 
-
-
 # Load the model
-#model = pickle.load(open("Logistic_Regression.pkl", 'rb'))
 with open('./Regression_models.pkl', 'rb') as f:
     models = pickle.load(f)
 
@@ -44,11 +41,6 @@ if uploaded_file is not None:
         # Predictions
         lr_predictions = models['LogisticRegression'].predict(scaled_data)
 
-       # ff_pred_probs = models['FeedForward'].predict(data)
-       # feedforward_predictions = np.array([np.argmax(probs) for probs in ff_pred_probs])
-        # Resolve activity labels
-       # ff_activity_predictions = [activity_map[pred] for pred in feedforward_predictions]
-
         ls_pred_probs = models['LSTM'].predict(scaled_data)
         lstm_predictions = np.array([np.argmax(probs) for probs in ls_pred_probs])
         # Resolve activity labels
@@ -61,20 +53,17 @@ if uploaded_file is not None:
         
         # Add predictions to the DataFrame
         data['LogisticRegression_Prediction'] = lr_predictions
-       # data['FeedForward'] = feedforward_predictions
         data['LSTM_Prediction'] = lstm_activity_predictions
         data['CNN_Prediction'] = cnn_activity_predictions
 
-        # Function to color mismatched predictions
-        def highlight_mismatch(pred_col, actual_col):
-            def highlight(row):
-                return ['background-color: lightcoral' if row[pred_col] != row[actual_col] else '' for _ in row]
-            return highlight
-            
-        # Apply highlight to each prediction column
-        styled_df = data.style.apply(highlight_mismatch('LogisticRegression_Prediction', 'Activity'), axis=1, subset=['LogisticRegression_Prediction', 'Activity']) \
-          #  .apply(highlight_mismatch('LSTM_Prediction', 'Activity'), axis=1, subset=['LSTM_Prediction']) \
-          #  .apply(highlight_mismatch('CNN_Prediction', 'Activity'), axis=1, subset=['CNN_Prediction'])
+        # Function to highlight mismatches
+        def highlight_mismatch(val, actual):
+            """Return color if mismatch, else no style."""
+            return 'background-color: lightcoral' if val != actual else ''
+
+        # Apply styling to mismatched predictions
+        styled_df = data.style.applymap(lambda val: highlight_mismatch(val, data[actual_activity_col]),
+                                        subset=['LogisticRegression_Prediction', 'LSTM_Prediction', 'CNN_Prediction'])
 
         # Display predictions
         st.write("🔍 **Predictions:**")
