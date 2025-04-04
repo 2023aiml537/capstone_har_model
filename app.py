@@ -68,6 +68,7 @@ if uploaded_file is not None:
         # Function to color mismatched predictions
         def highlight_mismatch(pred_col, actual_col):
             def highlight(row):
+                st.write(row)
                 return ['background-color: lightcoral' if row[pred_col] != row[actual_col] else '' for _ in row]
             return highlight
             
