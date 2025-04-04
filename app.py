@@ -4,6 +4,12 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
+# Function to color mismatched predictions
+def highlight_mismatch(pred_col, actual_col):
+    def highlight(row):
+        return ['background-color: lightcoral' if row[pred_col] != row[actual_col] else '' for _ in row]
+    return highlight
+
 # Load the model
 #model = pickle.load(open("Logistic_Regression.pkl", 'rb'))
 with open('./Regression_models.pkl', 'rb') as f:
@@ -60,9 +66,17 @@ if uploaded_file is not None:
         data['LSTM_Prediction'] = lstm_activity_predictions
         data['CNN_Prediction'] = cnn_activity_predictions
 
+        # Apply highlight to each prediction column
+        styled_df = data.style \
+            .apply(highlight_mismatch('LogisticRegression_Prediction', actual_activity_col), axis=1, subset=['LogisticRegression_Prediction']) \
+            .apply(highlight_mismatch('LSTM_Prediction', actual_activity_col), axis=1, subset=['LSTM_Prediction']) \
+            .apply(highlight_mismatch('CNN_Prediction', actual_activity_col), axis=1, subset=['CNN_Prediction'])
+
         # Display predictions
         st.write("🔍 **Predictions:**")
-        st.dataframe(data)
+        #st.dataframe(data)
+        st.dataframe(styled_df, use_container_width=True)
+
 
     except Exception as e:
         st.error(f"Error processing data: {e}")
