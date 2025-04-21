@@ -13,7 +13,7 @@ with open('./Regression_models.pkl', 'rb') as f:
 
 #streamlit title and description
 st.title("Human Activity Recognition")
-st.write("This app predicts human activities based on sensor data.")
+st.write("This app predicts HUMAN activities based on sensor data.")
 
 # Input widgets
 st.sidebar.header("Upload & Configuration")
